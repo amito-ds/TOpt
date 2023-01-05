@@ -2,26 +2,16 @@
 from parameters_utiils import ValueSet, Parameter, ParameterSet
 
 if __name__ == '__main__':
-    # Example 1: Create a ValueSet object with a set of values
-    # Create a ValueSet with a list of parameter values
-    # values = ValueSet("test", parameter_values=[1, 2, 3, 4])
-    #
-    # # Sample a value from the set of values
-    # sampled_value = values.sample()
-    #
-    # # Example 2: Sample a value from the set
-    # print(f"Sampled value: {sampled_value}")
-    # Create a continuous parameter
     # Create a continuous parameter
     p1 = Parameter("p1", "continuous", 0, 1)
 
-    # Create a discrete parameter
-    p2 = Parameter("p2", "discrete", 0, 10)
+    # Create a ParameterSet with a list of parameters
+    ps = ParameterSet("test", [p1])
 
-    # Create a ValueSet
-    values = ValueSet("test", parameter_values=[1, 2, 3, 4])
+    # Update the min_value attribute of the parameter
+    ps.update("p1", "min_value", 0.5)
 
-    # Create a ParameterSet with a list of parameters and ValueSets
-
+    # Print the updated min_value attribute
+    print(p1.min_value)  # 0.5
 
 

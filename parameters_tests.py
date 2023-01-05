@@ -53,6 +53,22 @@ class TestParameter(unittest.TestCase):
         self.assertLessEqual(sampled_values["p1"], 1)
         self.assertIn(sampled_values["p2"], [1, 2, 3])
 
+    def test_update(self):
+        # Test that the update method updates the parameter_values attribute with a new list of values
+        values = ValueSet("test", parameter_values=[1, 2, 3])
+        values.update([4, 5, 6])
+        self.assertEqual(values.parameter_values, [4, 5, 6])
+
+    def test_update2(self):
+        # Test that the update method updates the specified attribute of a parameter with a new value
+        p1 = Parameter("p1", "continuous", 0, 1)
+        ps = ParameterSet("test", [p1])
+        ps.update("p1", "min_value", 0.5)
+        self.assertEqual(p1.min_value, 0.5)
+
+    # Run the test
+    unittest.main()
+
 
 if __name__ == '__main__':
     unittest.main()

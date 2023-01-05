@@ -23,10 +23,6 @@ class Parameter:
 
 
 class ValueSet:
-    """
-    A class representing a set of discrete values.
-    """
-
     def __init__(self, name: str, parameter_values: typing.List[float]) -> None:
         self.name = name
         self.parameter_values = parameter_values
@@ -37,9 +33,21 @@ class ValueSet:
         """
         return random.choice(self.parameter_values)
 
+    def update(self, new_values: List[float]) -> None:
+        """
+        Update the set of values with a new list of values.
+        """
+        self.parameter_values = new_values
+
+    def sample(self) -> float:
+        """
+        Sample a value from the set of values.
+        """
+        return random.choice(self.parameter_values)
+
 
 class ParameterSet:
-    def __init__(self, name: str, parameters: List[Union[Parameter, ValueSet]]) -> None:
+    def __init__(self, name: str, parameters: List[Parameter]) -> None:
         self.name = name
         self.parameters = parameters
 
@@ -52,3 +60,13 @@ class ParameterSet:
         for parameter in self.parameters:
             sampled_values[parameter.name] = parameter.sample()
         return sampled_values
+
+    def update(self, parameter_name: str, attribute: str, new_value: float) -> None:
+        """
+        Update the specified attribute of a parameter with a new value.
+        """
+        for parameter in self.parameters:
+            if parameter.name == parameter_name:
+                setattr(parameter, attribute, new_value)
+                break
+
