@@ -6,7 +6,8 @@ import unittest
 
 class TestParameter(unittest.TestCase):
     def test_sample_continuous(self):
-        # Test that the sample method returns a continuous value from the range specified by the minimum and maximum values
+        # Test that the sample method returns a continuous value from the
+        # range specified by the minimum and maximum values
         p = Parameter("p", "continuous", 0, 1)
         sampled_value = p.sample()
         self.assertIsInstance(sampled_value, float)
@@ -14,7 +15,8 @@ class TestParameter(unittest.TestCase):
         self.assertLessEqual(sampled_value, 1)
 
     def test_sample_discrete(self):
-        # Test that the sample method returns a discrete value from the range specified by the minimum and maximum values
+        # Test that the sample method returns a discrete value from the
+        # range specified by the minimum and maximum values
         p = Parameter("p", "discrete", 0, 10)
         sampled_value = p.sample()
         self.assertIsInstance(sampled_value, int)
@@ -39,7 +41,7 @@ class TestParameter(unittest.TestCase):
         sampled_value = values.sample()
         self.assertIn(sampled_value, [1, 2, 3])
 
-    def test_sample(self):
+    def test_sample2(self):
         # Test that the sample method returns a dictionary of parameter names and sampled values
         p1 = Parameter("p1", "continuous", 0, 1)
         p2 = ValueSet("p2", [1, 2, 3])
@@ -66,8 +68,24 @@ class TestParameter(unittest.TestCase):
         ps.update("p1", "min_value", 0.5)
         self.assertEqual(p1.min_value, 0.5)
 
-    # Run the test
-    unittest.main()
+    def test_update3(self):
+        # Test update method for continuous parameter
+        p1 = Parameter("p1", "continuous", 0, 1)
+        ps = ParameterSet("test", [p1])
+        ps.update("p1", "min_value", 0.5)
+        self.assertEqual(p1.min_value, 0.5)
+
+        # Test update method for discrete parameter
+        p2 = Parameter("p2", "discrete", 0, 10)
+        ps = ParameterSet("test", [p2])
+        ps.update("p2", "max_value", 5)
+        self.assertEqual(p2.max_value, 5)
+
+        # Test update method for ValueSet
+        values = ValueSet("test", parameter_values=[1, 2, 3])
+        ps = ParameterSet("test", [values])
+        ps.update("test", "parameter_values", [4, 5, 6])
+        self.assertEqual(values.parameter_values, [4, 5, 6])
 
 
 if __name__ == '__main__':

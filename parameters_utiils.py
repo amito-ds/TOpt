@@ -47,7 +47,7 @@ class ValueSet:
 
 
 class ParameterSet:
-    def __init__(self, name: str, parameters: List[Parameter]) -> None:
+    def __init__(self, name: str, parameters: List[Union[Parameter, ValueSet]]) -> None:
         self.name = name
         self.parameters = parameters
 
@@ -69,4 +69,3 @@ class ParameterSet:
             if parameter.name == parameter_name:
                 setattr(parameter, attribute, new_value)
                 break
-
