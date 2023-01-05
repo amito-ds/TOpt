@@ -10,6 +10,15 @@ class Parameter:
         self.min_value = min_value
         self.max_value = max_value
 
+    def update(self, min_value: float = None, max_value: float = None) -> None:
+        """
+        Update the minimum or maximum value of the parameter.
+        """
+        if min_value is not None:
+            self.min_value = min_value
+        if max_value is not None:
+            self.max_value = max_value
+
     def sample(self) -> float:
         """
         Sample a value from the range specified by the minimum and maximum values.

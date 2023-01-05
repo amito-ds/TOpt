@@ -1,8 +1,7 @@
-
-
 import pandas as pd
 from sklearn.tree import DecisionTreeRegressor
 from parameters_utiils import ParameterSet
+
 
 def train_decision_tree(results: pd.DataFrame, param_set: ParameterSet) -> str:
     # Separate the label column and feature columns
@@ -10,7 +9,7 @@ def train_decision_tree(results: pd.DataFrame, param_set: ParameterSet) -> str:
     y = results['metric']
 
     # Train a decision tree regressor with at least 25% of the data in each leaf
-    regressor = DecisionTreeRegressor(min_samples_leaf=len(results) // 4)
+    regressor = DecisionTreeRegressor(min_samples_leaf=len(results) // 20)
     regressor.fit(X, y)
 
     # Check if the tree has only one node
@@ -31,8 +30,6 @@ def train_decision_tree(results: pd.DataFrame, param_set: ParameterSet) -> str:
     rule = f"{param_name} > {threshold}"
 
     return rule
-
-
 
 #
 # def train_decision_tree(results: pd.DataFrame, param_set: ParameterSet) -> Tuple[str, float, str]:

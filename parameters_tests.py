@@ -5,6 +5,7 @@ import pandas as pd
 
 from dt_utils import train_decision_tree
 from parameters_utiils import ParameterSet, Parameter, ValueSet
+from update_utils import update_param
 
 
 class TestParameter(unittest.TestCase):
@@ -116,6 +117,37 @@ class TestParameter(unittest.TestCase):
 
         # Check if the first split variable is "learning_rate"
         self.assertEqual(rule.split(" ")[0], "learning_rate")
+
+    def test_update_param(self):
+        # Create a parameter set with two continuous parameters
+        param_set = ParameterSet("param_set", [
+            Parameter("p1", "continuous", 0, 1),
+            Parameter("p2", "continuous", 0, 1)
+        ])
+
+        # Update the parameter set with a rule that updates p1
+        rule = "p1 > 0.5"
+        update_param(rule, param_set)
+
+        # Check that p1 has been updated correctly
+        self.assertAlmostEqual(param_set.parameters[0].min_value, 0.5)
+        self.assertAlmostEqual(param_set.parameters[0].max_value, 1)
+
+        # Check that p2 has not been updated
+        self.assertAlmostEqual(param_set.parameters[1].min_value, 0)
+        self.assertAlmostEqual(param_set.parameters[1].max_value, 1)
+
+        # Update the parameter set with a rule that updates p2
+        rule = "p2 < 0.7"
+        update_param(rule, param_set)
+
+        # Check that p1 has not been updated
+        self.assertAlmostEqual(param_set.parameters[0].min_value, 0.5)
+        self.assertAlmostEqual(param_set.parameters[0].max_value, 1)
+
+        # Check that p2 has been updated correctly
+        self.assertAlmostEqual(param_set.parameters[1].min_value, 0)
+        self.assertAlmostEqual(param_set.parameters[1].max_value, 0.7)
 
 
 if __name__ == '__main__':
