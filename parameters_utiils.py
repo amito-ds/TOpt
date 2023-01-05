@@ -1,6 +1,6 @@
 import random
-from typing import List
 import typing
+from typing import List, Dict, Union
 
 
 class Parameter:
@@ -14,7 +14,12 @@ class Parameter:
         """
         Sample a value from the range specified by the minimum and maximum values.
         """
-        return random.uniform(self.min_value, self.max_value)
+        if self.parameter_type == "continuous":
+            return random.uniform(self.min_value, self.max_value)
+        elif self.parameter_type == "discrete":
+            return random.randint(int(self.min_value), int(self.max_value))
+        else:
+            raise ValueError(f"Invalid parameter type: {self.parameter_type}")
 
 
 class ValueSet:
@@ -34,6 +39,16 @@ class ValueSet:
 
 
 class ParameterSet:
-    def __init__(self, name: str, parameters: List[Parameter]) -> None:
+    def __init__(self, name: str, parameters: List[Union[Parameter, ValueSet]]) -> None:
         self.name = name
         self.parameters = parameters
+
+    def sample(self) -> Dict[str, float]:
+        """
+        Sample a value for each parameter in the set.
+        Returns a dictionary of parameter names and sampled values.
+        """
+        sampled_values = {}
+        for parameter in self.parameters:
+            sampled_values[parameter.name] = parameter.sample()
+        return sampled_values
