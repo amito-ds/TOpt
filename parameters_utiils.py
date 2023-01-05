@@ -39,12 +39,6 @@ class ValueSet:
         """
         self.parameter_values = new_values
 
-    def sample(self) -> float:
-        """
-        Sample a value from the set of values.
-        """
-        return random.choice(self.parameter_values)
-
 
 class ParameterSet:
     def __init__(self, name: str, parameters: List[Union[Parameter, ValueSet]]) -> None:

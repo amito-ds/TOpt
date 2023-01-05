@@ -1,7 +1,10 @@
+import random
 import unittest
 
+import pandas as pd
+
+from dt_utils import train_decision_tree
 from parameters_utiils import ParameterSet, Parameter, ValueSet
-import unittest
 
 
 class TestParameter(unittest.TestCase):
@@ -86,6 +89,33 @@ class TestParameter(unittest.TestCase):
         ps = ParameterSet("test", [values])
         ps.update("test", "parameter_values", [4, 5, 6])
         self.assertEqual(values.parameter_values, [4, 5, 6])
+
+    def test_train_decision_tree(self):
+        # Create a parameter set with two continuous parameters
+        param_set = ParameterSet(
+            name="test",
+            parameters=[
+                Parameter("learning_rate", "continuous", 0, 1),
+                Parameter("max_depth", "continuous", 1, 10)
+            ]
+        )
+
+        # Create a results dataframe with random values for the two parameters and a random metric value
+        # Make the metric value correlated with the learning_rate parameter
+        results = pd.DataFrame(
+            data={
+                "learning_rate": [random.uniform(0, 1) for _ in range(100)],
+                "max_depth": [random.uniform(1, 10) for _ in range(100)],
+                "metric": [random.uniform(0, 1) for _ in range(100)]
+            }
+        )
+        results['metric'] = results['learning_rate'] + random.uniform(-0.1, 0.1)
+
+        # Train the decision tree
+        rule = train_decision_tree(results, param_set)
+
+        # Check if the first split variable is "learning_rate"
+        self.assertEqual(rule.split(" ")[0], "learning_rate")
 
 
 if __name__ == '__main__':
